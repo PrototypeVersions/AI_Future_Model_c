@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use or discuss this model, please cite it as below."
+title: "AI Futures Model: an assumption-explicit model of AI training, oversight, concealment and value formation"
+version: 0.1.0
+date-released: 2026-10-13
+type: software
+authors:
+  - name: "AI Futures Model contributors"
+repository-code: "https://github.com/PrototypeVersions/AI_Future_Model_c"
+url: "https://prototypeversions.github.io/AI_Future_Model_c/"
+license: MIT
+keywords:
+  - AI alignment
+  - deceptive alignment
+  - value drift
+  - interpretability
+  - metaethics
+  - sensitivity analysis

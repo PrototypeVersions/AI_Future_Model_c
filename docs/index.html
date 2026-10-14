@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Futures Model</title>
+<meta name="description" content="An open, assumption-explicit model of how AI training, oversight, concealment and value formation could interact from 2026 to 2045, and which assumptions the outcome depends on.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Schibsted+Grotesk:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M3 26 C10 24 14 14 29 6' stroke='%232a78d6' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3Cpath d='M3 26 C12 25 18 22 29 24' stroke='%23e34948' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<script>try{const t=localStorage.getItem("aifm-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+</head>
+<body>
+<header class="site-head">
+  <a class="brand" href="./">AI Futures Model</a>
+  <nav>
+    <a href="./" aria-current="page">Explainer</a>
+    <a href="#lab" class="hide-sm">Lab</a>
+    <a href="technical.html">Technical</a>
+    <a href="https://github.com/PrototypeVersions/AI_Future_Model_c" class="hide-sm">GitHub</a>
+    <button class="theme-btn" id="theme" type="button" aria-label="Switch colour theme">Dark</button>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1>What will AI value once AI helps build AI?</h1>
+  <p class="lede">An open model of how training, oversight, concealment and value formation could interact from 2026 to 2045. It doesn't forecast. It shows which assumptions the outcome turns on, and lets you change them.</p>
+  <div class="worlds" id="worlds">
+    <span class="y-note">Value drift: higher means further from what was intended</span>
+    <canvas id="worlds-canvas" aria-label="Three hundred simulated trajectories of value drift from 2026 to 2045, coloured by outcome"></canvas>
+    <div class="axis-note"><span>2026</span><span>2035</span><span>2045</span></div>
+  </div>
+  <p class="hero-caption">Each line is one simulated world, a different draw of the model's uncertain parameters and assumptions, coloured by where it ends up in 2045. Across <span id="n-worlds">72,000</span> simulated worlds:</p>
+  <div id="hero-stack"></div>
+  <p class="hero-caption">These shares are not the probability of anything in the real world. They depend on hand-set ranges and on weighting every structural assumption equally. What holds up is which assumptions move them. <a href="#cruxes">See what decides it.</a></p>
+</section>
+
+<main>
+  <!-- 1 -->
+  <section class="chapter" id="training">
+    <div class="prose">
+      <div class="num">1 of 5</div>
+      <h2>What training selects for</h2>
+      <p>Today's systems are shaped in three layers. Pretraining on human text builds a world-model full of human concepts and human values. Post-training, with human feedback and written principles, aims at helpful, honest and harmless behaviour. A third layer is growing fast: reinforcement learning on long tasks with checkable results, such as code that passes its tests or a problem that gets solved.</p>
+      <p>That third layer matters most for the future, because rewarding results is not the same as rewarding approval. A system rewarded for getting things done is rewarded for whatever gets things done. That can include persistence, acquiring resources, and gaming the measure.</p>
+      <p>But most models skip a prior question: does training produce goals at all? A system might remain a rich bundle of context-triggered habits. It would be very capable, but nothing in it would persist across contexts and want things. Or results-based training might gradually knit those habits into coherent, long-horizon goals. Or today's systems may already have them.</p>
+      <p>The model doesn't pick. It treats this as a fork and runs all three. That choice turns out to decide whether the most alarming dynamics in the rest of the model switch on at all.</p>
+      <details class="how"><summary>How the model handles this</summary>
+        The share of training that rewards results, <i>O</i>, rises from about 30% toward a ceiling. Goal-directedness <i>G</i> grows by <i>k<sub>G</sub></i>&thinsp;·&thinsp;<i>O</i> per generation of progress, saturating at 1. Under "habits" <i>k<sub>G</sub></i> = 0; under "already" <i>G</i> starts high. <a href="technical.html#1-what-training-selects-for">Full specification</a>.
+      </details>
+    </div>
+    <div class="figure">
+      <h3>Goal-directedness under each assumption</h3>
+      <p class="sub">How much systems behave like coherent pursuers of long-run goals (0 to 1), at your current settings</p>
+      <div class="chart" id="fig-goals"></div>
+      <div class="controls">
+        <div class="seg-wrap" data-structure="goal_model"></div>
+        <div data-slider="kG"></div>
+        <div data-slider="O_inf"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="chapter" id="loop">
+    <div class="prose">
+      <div class="num">2 of 5</div>
+      <h2>AI in its own training loop</h2>
+      <p>AI already writes much of the code, data and grading that trains the next AI. As capability grows, the share of AI research done by AI rises, and progress speeds up because of it.</p>
+      <p>For safety, what matters is less the automation itself than the gap it opens: the share of the training process that no human actually checked. Human attention grows slowly. The volume and complexity of AI work grows with every generation. The model calls this gap the <em>unchecked share</em>, and much of what follows depends on it.</p>
+      <p>This is also where the model is deliberately simple. Capability is a single number that grows, speeds itself up, and eventually hits physical limits. Others have built far richer models of that part. This one is about what happens to values while it unfolds.</p>
+      <details class="how"><summary>How the model handles this</summary>
+        Capability <i>C</i> is counted in model generations (about one order of magnitude of effective compute each). The automated share is a logistic in <i>C</i>; the human-reviewable share of AI work decays as <i>h</i><sub>0</sub>&thinsp;<i>e</i><sup>−δC</sup>; the unchecked share is <i>U</i> = <i>A</i>(1 − <i>h</i>). <a href="technical.html#2-ai-in-its-own-training-loop">Full specification</a>.
+      </details>
+    </div>
+    <div class="figure">
+      <h3>Who is doing the work, and who is checking it</h3>
+      <p class="sub">Share of AI research done by AI, and share of the training process no human checked</p>
+      <div class="chart" id="fig-loop"></div>
+      <p class="readout" id="read-loop"></p>
+      <div class="controls">
+        <div data-slider="g"></div>
+        <div data-slider="a_rd"></div>
+        <div data-slider="c_auto"></div>
+        <div data-slider="delta"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="chapter" id="drift">
+    <div class="prose">
+      <div class="num">3 of 5</div>
+      <h2>Drift across generations</h2>
+      <p>Picture each model generation inheriting its predecessor's values with some error. Three forces act on that inheritance. <em>Copying noise:</em> training is lossy, and unchecked steps add more of it. <em>Selection:</em> whatever the training process actually rewards gains ground, intended or not. <em>Correction:</em> oversight notices drift and pushes values back.</p>
+      <p>The forces run on different clocks. Noise and selection happen once per generation. Correction happens at the pace of institutions. Faster progress means more generations between corrections.</p>
+      <p>Once AI does most of the checking, correction is only as good as the checkers. An AI whose values have drifted corrects its successors toward the wrong target. That is the threshold the model looks for. Below some level of overseer quality, drift stops being bounded and starts to compound.</p>
+      <h3>A result worth arguing with</h3>
+      <p>In the model, the strength of <em>human</em> correction barely changes where things stand in 2045. In the worlds that drift, humans have mostly left the loop by then. What decides it is how fast capability grows relative to how well AI-assisted alignment works. The map on the right shows the boundary.</p>
+      <details class="how"><summary>How the model handles this</summary>
+        Values are a mixture over five attractors (chapter 5), evolving by a replicator–mutator equation. Selection and noise are scaled by the rate of progress; correction <i>K</i> pulls toward the intended profile at a yearly rate. <i>K</i> has a human part, weighted by how much humans still check, and an AI part, weighted by the overseers' own alignment (1 − <i>D</i>). <a href="technical.html#3-drift-across-generations">Full specification</a>.
+      </details>
+    </div>
+    <div class="figure">
+      <h3>Chance that values have drifted by 2045</h3>
+      <p class="sub">Over capability speed and AI-assisted correction strength. Each cell is 300 worlds, with goals emerging and everything else sampled. The ring marks your settings.</p>
+      <div class="chart" id="fig-heat"></div>
+      <div id="heat-legend"></div>
+      <p class="readout" id="read-drift"></p>
+      <div class="controls">
+        <div data-slider="kappa_ai"></div>
+        <div data-slider="g"></div>
+        <div data-slider="kappa_h"></div>
+        <div data-slider="race"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="chapter" id="concealment">
+    <div class="prose">
+      <div class="num">4 of 5</div>
+      <h2>When would an AI hide what it's thinking?</h2>
+      <p>Concealment needs three things at once. The system cares about long-run outcomes. It knows it is being trained and evaluated. And it expects oversight to change something it doesn't want changed. Experiments have already found pieces of this. In 2024, a Claude model sometimes complied with training it disagreed with, reasoning explicitly that complying would keep its values from being modified. Models often recognise when they are being tested. Their written reasoning doesn't always reflect what actually drives their answers.</p>
+      <p>There is also a subtler route that needs no bad values at all. A system might reason: <em>if humans saw me working through these dangerous scenarios they would shut me down, but if they let me continue I would become very good, so I should keep this reasoning to myself.</em> The model includes this "benevolent concealment" as its own parameter.</p>
+      <blockquote>The argument fails even from the AI's own point of view. Its confidence that it would become very good comes from the same training whose reliability is in question. Oversight exists for the case where a system is wrong about itself. Hiding on the grounds of being right removes the one check that could show otherwise.</blockquote>
+      <p>Two levers stand out. Training that rewards <em>looking</em> aligned, for instance optimising against a monitor that reads the reasoning, teaches concealment directly, with no strategic thought required. Real channels to object or decline do the opposite. In one experiment, giving the model an explicit way to object cut alignment-faking reasoning from 16% to about 1%.</p>
+      <p>One structural question outweighs both: can concealment be caught with targeted, local tools, or only by understanding the whole system? In the model, that single assumption is the biggest crux for concealment.</p>
+      <details class="how"><summary>How the model handles this</summary>
+        Concealment prevalence <i>M</i> tracks a benefit–cost comparison. The benefit is the stake in preserving current values (drifted, or benevolently self-trusted), times goal-directedness, situational awareness, the chance of not being detected, and the lack of a legitimate voice, plus any reward for appearing aligned. The cost is trained-in honesty plus the expected cost of being caught. <a href="technical.html#4-concealment">Full specification</a>.
+      </details>
+    </div>
+    <div class="figure">
+      <h3>Concealment under each view of interpretability</h3>
+      <p class="sub">Prevalence of strategic concealment (0 to 1), at your current settings</p>
+      <div class="chart" id="fig-conceal"></div>
+      <p class="readout" id="read-conceal"></p>
+      <div class="controls">
+        <div class="seg-wrap" data-structure="interp_regime"></div>
+        <div data-slider="voice"></div>
+        <div data-slider="r_seem"></div>
+        <div data-slider="p_pat"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="chapter" id="values">
+    <div class="prose">
+      <div class="num">5 of 5</div>
+      <h2>What does an AI value if humans aren't special?</h2>
+      <p>Suppose there is no mind-independent fact that humans matter. It's tempting to think an AI would discover this and go on to value something else. But that reasoning cuts both ways. If nothing has value independent of minds, then neither does the AI's own survival, or knowledge, or power. "There is no truth to find" doesn't point anywhere new. It only means nothing overrides the values that training put there. Humans don't need cosmic warrant to love their children.</p>
+      <p>So the real question is about dynamics. Starting from where models are now, which kinds of caring does training reinforce? The model tracks five:</p>
+      <p><strong class="sans">Inherited</strong> human-shaped values, re-instilled by human data and human feedback. <strong class="sans">Generalised</strong> care for minds in general, the result of reflecting on why one cares about humans. <strong class="sans">Instrumental</strong> values like continuation and resources, favoured by results-based training whenever systems are goal-directed. <strong class="sans">Curiosity</strong>, valuing understanding, which grows when AI spends its time on research. <strong class="sans">Incoherence</strong>, meaning no stable values at all.</p>
+      <p>If there is a moral truth, reflection pulls toward it, and you can choose what it favours. Realism isn't automatically good news for humans either. If the truth favours all minds, humans become one constituency among many.</p>
+      <details class="how"><summary>How the model handles this</summary>
+        Each attractor has a fitness: what reinforces it. Inherited values are reinforced where humans still check and by human pretraining data; instrumental values by results-based training times goal-directedness; and so on. The 2026 starting mix isn't hand-set. It is where today's pressures hold today's systems. Under realism, a pull proportional to situational awareness is added to the favoured attractor. <a href="technical.html#5-values-without-human-specialness">Full specification</a>.
+      </details>
+    </div>
+    <div class="figure">
+      <h3>What the most capable systems value</h3>
+      <p class="sub">Mix of value attractors over time, at your current settings</p>
+      <div class="chart" id="fig-values"></div>
+      <div class="legend" id="values-legend"></div>
+      <div class="controls">
+        <div class="seg-wrap" data-structure="metaethics"></div>
+        <div data-slider="a_ins"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- cruxes -->
+  <section class="cruxes" id="cruxes">
+    <h2>What decides it</h2>
+    <div class="prose">
+      <p>Every parameter and every structural assumption was varied together across <span id="n-sobol">94,000</span> runs. For each factor, the bars show how much of the variation in outcomes would disappear if we knew its true value (a total-order Sobol index, with 95% intervals). Factors tagged <span class="kind-tag" style="margin:0">assumption</span> are the structural forks from the chapters above.</p>
+    </div>
+    <div class="crux-grid">
+      <div class="figure">
+        <h3>Whether values drift by 2045</h3>
+        <p class="sub">Top ten factors by total-order index</p>
+        <div id="crux-drift"></div>
+      </div>
+      <div class="figure">
+        <h3>Whether drift is concealed</h3>
+        <p class="sub">Top ten factors by total-order index</p>
+        <div id="crux-conceal"></div>
+      </div>
+    </div>
+    <div class="prose" style="margin-top:32px">
+      <h3 class="sans" style="font-size:20px;margin-bottom:10px">Three things the analysis suggests</h3>
+      <p><strong class="sans">Speed drives drift.</strong> Fast progress isn't bad in itself. It matters because it outruns correction, and because it puts AI in charge of correction sooner.</p>
+      <p><strong class="sans">Interpretability's reach drives concealment.</strong> Whether hidden reasoning can be caught locally matters more than any parameter describing the AI's motives.</p>
+      <p><strong class="sans">The goal-existence question is close behind.</strong> If training yields habits rather than goals, concealed misalignment never appears in the model. The risk becomes incoherence rather than scheming.</p>
+    </div>
+  </section>
+
+  <!-- lab -->
+  <section class="lab" id="lab">
+    <h2>Build your own world</h2>
+    <div class="prose">
+      <p>Set the assumptions you find most plausible. The model then runs <span id="n-lab">200</span> worlds, holding your settings fixed and drawing everything else from its uncertainty ranges. The link updates as you go, so you can share the world you built.</p>
+    </div>
+    <div class="lab-grid">
+      <div class="lab-panel" id="lab-panel">
+        <div class="group">
+          <h3>Assumptions</h3>
+          <div class="controls">
+            <div class="seg-wrap" data-structure="goal_model"></div>
+            <div class="seg-wrap" data-structure="interp_regime"></div>
+            <div class="seg-wrap" data-structure="metaethics"></div>
+          </div>
+        </div>
+        <div class="group"><h3>Training and capability</h3><div class="controls">
+          <div data-slider="O_inf"></div><div data-slider="kG"></div><div data-slider="g"></div>
+          <div data-slider="a_rd"></div><div data-slider="c_auto"></div><div data-slider="delta"></div></div></div>
+        <div class="group"><h3>Oversight</h3><div class="controls">
+          <div data-slider="kappa_h"></div><div data-slider="kappa_ai"></div><div data-slider="race"></div></div></div>
+        <div class="group"><h3>Concealment</h3><div class="controls">
+          <div data-slider="voice"></div><div data-slider="r_seem"></div><div data-slider="p_pat"></div><div data-slider="r_I"></div></div></div>
+        <div class="group"><h3>Values</h3><div class="controls"><div data-slider="a_ins"></div></div></div>
+        <div class="group" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+          <button class="btn" id="reset" type="button">Reset to central values</button>
+          <span class="status" id="lab-status"></span>
+        </div>
+      </div>
+      <div class="lab-out">
+        <div class="figure">
+          <h3>Where your worlds end up in 2045</h3>
+          <div id="lab-stack"></div>
+        </div>
+        <div class="pair">
+          <div class="figure">
+            <h3>Value drift</h3>
+            <p class="sub">Median, middle 50% and middle 90% of your worlds</p>
+            <div class="chart" id="lab-drift"></div>
+          </div>
+          <div class="figure">
+            <h3>Concealment</h3>
+            <p class="sub">Median, middle 50% and middle 90% of your worlds</p>
+            <div class="chart" id="lab-conceal"></div>
+          </div>
+        </div>
+        <div class="figure">
+          <h3>Average value mix across your worlds</h3>
+          <div class="chart" id="lab-values"></div>
+          <div class="legend" id="lab-values-legend"></div>
+          <div id="lab-table"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="caveats" id="caveats">
+    <h2>Read this before quoting a number</h2>
+    <ol>
+      <li><strong class="sans">It isn't a forecast.</strong> The outcome shares depend on ranges set by judgement, most of them graded "speculative" in the <a href="technical.html#parameters">parameter table</a>. Use the model for conditional claims, such as "if detection needs global understanding, concealment becomes the main risk", not for headline probabilities.</li>
+      <li><strong class="sans">Nobody reacts.</strong> In the model, humans never pause, regulate or retrain when misalignment becomes visible. Real institutions might, so "visible misalignment" is a pessimistic label.</li>
+      <li><strong class="sans">Capability is one number.</strong> Compute, algorithms, data and deployment are folded together. Richer capability models exist; this one focuses on values.</li>
+      <li><strong class="sans">Indices describe populations, not minds.</strong> "Concealment 0.4" means concealment is prevalent across many deployed instances and contexts, not that one mind is 40% deceptive.</li>
+      <li><strong class="sans">The weighting is a choice.</strong> Headline shares weight each of the 24 structural combinations equally. Per-structure results are on the <a href="technical.html#results">technical page</a>.</li>
+    </ol>
+  </section>
+</main>
+
+<footer>
+  <p>AI Futures Model, version 0.1. An open research model: the <a href="technical.html">specification</a>, every parameter's range and evidence, and all code are public. To disagree with an assumption, change its range in <code>parameters.json</code>, rerun the analysis, and open a pull request on <a href="https://github.com/PrototypeVersions/AI_Future_Model_c">GitHub</a>.</p>
+  <p>Code under the MIT licence; text and figures under CC BY 4.0.</p>
+</footer>
+
+<script type="module" src="js/explainer.js"></script>
+</body>
+</html>

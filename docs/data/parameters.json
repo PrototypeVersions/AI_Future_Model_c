@@ -1,0 +1,792 @@
+{
+  "_note": "Every sampled parameter: central value, plausible range [low, high], evidence grade, and the reasoning behind it. Monte Carlo draws from a triangular(low, central, high); Sobol sensitivity draws uniformly on [low, high]. Evidence grades: strong = direct empirical measurement; moderate = empirical trend or analogue; weak = indirect evidence plus argument; speculative = argument only. Units for 'generations': one frontier-model generation, roughly one order of magnitude of effective training compute.",
+  "modules": {
+    "M1": "What training selects for",
+    "M2": "AI in its own training loop",
+    "M3": "Drift across generations",
+    "M4": "Concealment",
+    "M5": "Values without human specialness",
+    "X": "Cross-cutting pressures"
+  },
+  "parameters": [
+    {
+      "id": "O0",
+      "module": "M1",
+      "symbol": "O_0",
+      "label": "Outcome-based RL share, 2026",
+      "plain": "How much of today's training rewards results rather than human approval",
+      "central": 0.3,
+      "low": 0.15,
+      "high": 0.45,
+      "unit": "share",
+      "evidence": "weak",
+      "lab": false,
+      "why": "Reinforcement learning on verifiable, long-horizon tasks (code, maths, agentic tool use) became a major share of post-training after 2024. Labs do not publish compute splits, so the range is wide.",
+      "refs": [
+        "deepseek2025",
+        "lambert2024"
+      ]
+    },
+    {
+      "id": "O_inf",
+      "module": "M1",
+      "symbol": "O_\\infty",
+      "label": "Long-run outcome-based RL share",
+      "plain": "How far training shifts toward rewarding results on long tasks",
+      "central": 0.7,
+      "low": 0.4,
+      "high": 0.9,
+      "unit": "share",
+      "evidence": "speculative",
+      "lab": true,
+      "why": "Agentic products reward getting tasks done, and outcome rewards scale without human labellers. The upper bound reflects that human-preference and constitution-style training are unlikely to vanish.",
+      "refs": [
+        "kwa2025",
+        "ngo2022"
+      ]
+    },
+    {
+      "id": "r_O",
+      "module": "M1",
+      "symbol": "r_O",
+      "label": "Rate of shift to outcome-based RL",
+      "plain": "How quickly that shift happens",
+      "central": 0.15,
+      "low": 0.05,
+      "high": 0.4,
+      "unit": "1/year",
+      "evidence": "speculative",
+      "lab": false,
+      "why": "Half the remaining gap closes in roughly 2 to 14 years across the range.",
+      "refs": []
+    },
+    {
+      "id": "G0",
+      "module": "M1",
+      "symbol": "G_0",
+      "label": "Goal-directedness, 2026",
+      "plain": "How much today's systems behave like coherent long-horizon optimizers",
+      "central": 0.2,
+      "low": 0.05,
+      "high": 0.4,
+      "unit": "0-1 index",
+      "evidence": "weak",
+      "lab": false,
+      "why": "Current models pursue in-context goals and sometimes scheme in contrived evaluations, but behaviour is strongly context-dependent and inconsistent across framings.",
+      "refs": [
+        "meinke2024",
+        "lynch2025",
+        "turner2022shard"
+      ]
+    },
+    {
+      "id": "kG",
+      "module": "M1",
+      "symbol": "k_G",
+      "label": "Goal emergence per generation",
+      "plain": "How strongly results-based training turns habits into coherent goals",
+      "central": 0.1,
+      "low": 0.02,
+      "high": 0.3,
+      "unit": "per generation",
+      "evidence": "speculative",
+      "lab": true,
+      "why": "The central open question of the goal-existence problem. Learned-optimization arguments say outcome pressure on long tasks favours internal search toward objectives; shard-style views say it yields richer habits, not unified goals. Set to zero under the 'habits' structural assumption.",
+      "refs": [
+        "hubinger2019",
+        "turner2022shard",
+        "ngo2022"
+      ]
+    },
+    {
+      "id": "G0_already",
+      "module": "M1",
+      "symbol": "G_0^{\\text{already}}",
+      "label": "Goal-directedness if goals already exist",
+      "plain": "Starting goal-directedness under the 'already goal-directed' assumption",
+      "central": 0.75,
+      "low": 0.6,
+      "high": 0.9,
+      "unit": "0-1 index",
+      "evidence": "speculative",
+      "lab": false,
+      "why": "Used only under the 'already' structural assumption, which reads current agentic behaviour as evidence of stable underlying goals.",
+      "refs": [
+        "carlsmith2023"
+      ]
+    },
+    {
+      "id": "g",
+      "module": "M2",
+      "symbol": "g",
+      "label": "Baseline capability growth",
+      "plain": "How fast frontier AI improves before AI speeds up its own research",
+      "central": 0.45,
+      "low": 0.2,
+      "high": 0.9,
+      "unit": "generations/year",
+      "evidence": "moderate",
+      "lab": true,
+      "why": "Effective training compute has grown by very roughly 0.5 to 1 order of magnitude per year; METR's task-horizon measure doubled about every 7 months through 2024-25. Capability dynamics are deliberately simple here; see GATE and Davidson for richer treatments.",
+      "refs": [
+        "kwa2025",
+        "davidson2023",
+        "erdil2025"
+      ]
+    },
+    {
+      "id": "a_rd",
+      "module": "M2",
+      "symbol": "a_{rd}",
+      "label": "R&D automation speed-up",
+      "plain": "How much AI doing AI research accelerates progress",
+      "central": 1.5,
+      "low": 0.3,
+      "high": 4.0,
+      "unit": "multiplier at full automation",
+      "evidence": "speculative",
+      "lab": true,
+      "why": "At full automation, growth runs at (1 + a_rd) times baseline. Takeoff models span a modest boost to large multiples, depending on compute bottlenecks.",
+      "refs": [
+        "davidson2023",
+        "kokotajlo2025",
+        "erdil2025"
+      ]
+    },
+    {
+      "id": "C_sat",
+      "module": "M2",
+      "symbol": "C_{sat}",
+      "label": "Bottleneck scale",
+      "plain": "How soon physical limits (chips, energy, data) slow progress",
+      "central": 8.0,
+      "low": 4.0,
+      "high": 20.0,
+      "unit": "generations",
+      "evidence": "speculative",
+      "lab": false,
+      "why": "Growth is divided by (1 + C/C_sat). It stands in for compute, energy and capital constraints that integrated assessment models treat explicitly.",
+      "refs": [
+        "erdil2025"
+      ]
+    },
+    {
+      "id": "c_auto",
+      "module": "M2",
+      "symbol": "c_{auto}",
+      "label": "Capability at 50% R&D automation",
+      "plain": "How capable AI must be before it does half of AI research",
+      "central": 5.0,
+      "low": 2.0,
+      "high": 12.0,
+      "unit": "generations from 2026",
+      "evidence": "weak",
+      "lab": true,
+      "why": "At the centre, AI does about 12% of AI R&D in 2026 (much coding, data generation and grading are already automated). Automated-research prototypes exist but remain limited.",
+      "refs": [
+        "lu2024",
+        "kokotajlo2025"
+      ]
+    },
+    {
+      "id": "h0",
+      "module": "M2",
+      "symbol": "h_0",
+      "label": "Human-reviewable share of AI work, 2026",
+      "plain": "How much of AI-generated training work humans can actually check today",
+      "central": 0.6,
+      "low": 0.3,
+      "high": 0.9,
+      "unit": "share",
+      "evidence": "weak",
+      "lab": false,
+      "why": "Humans still read and approve most consequential changes, but synthetic data and AI grading already exceed human review capacity in volume.",
+      "refs": [
+        "bai2022"
+      ]
+    },
+    {
+      "id": "delta",
+      "module": "M2",
+      "symbol": "\\delta",
+      "label": "Oversight dilution per generation",
+      "plain": "How fast AI work outgrows human ability to check it",
+      "central": 0.25,
+      "low": 0.08,
+      "high": 0.5,
+      "unit": "per generation",
+      "evidence": "speculative",
+      "lab": true,
+      "why": "Each generation produces more work, of greater complexity, faster. Human review bandwidth grows slowly, so the reviewable share decays roughly exponentially in capability.",
+      "refs": [
+        "christiano2018",
+        "burns2023"
+      ]
+    },
+    {
+      "id": "mu0",
+      "module": "M3",
+      "symbol": "\\mu_0",
+      "label": "Baseline value-copying noise",
+      "plain": "How imperfectly each generation inherits the last one's values",
+      "central": 0.08,
+      "low": 0.03,
+      "high": 0.18,
+      "unit": "per generation",
+      "evidence": "weak",
+      "lab": false,
+      "why": "Fine-tuning has non-local effects on dispositions, and narrow training can shift broad persona traits, so value transfer between generations is lossy.",
+      "refs": [
+        "betley2025"
+      ]
+    },
+    {
+      "id": "mu_U",
+      "module": "M3",
+      "symbol": "\\mu_U",
+      "label": "Extra noise from unchecked steps",
+      "plain": "How much extra drift unchecked, AI-run training adds",
+      "central": 0.15,
+      "low": 0.05,
+      "high": 0.3,
+      "unit": "per generation at U=1",
+      "evidence": "speculative",
+      "lab": false,
+      "why": "Unreviewed synthetic data, AI graders and AI-written training code add copying errors no human catches.",
+      "refs": [
+        "macdiarmid2025"
+      ]
+    },
+    {
+      "id": "kappa_h",
+      "module": "M3",
+      "symbol": "\\kappa_h",
+      "label": "Human correction strength",
+      "plain": "How effectively humans catch and fix value drift",
+      "central": 0.5,
+      "low": 0.15,
+      "high": 1.2,
+      "unit": "1/year",
+      "evidence": "speculative",
+      "lab": true,
+      "why": "Red-teaming, evaluations and corrective fine-tuning remove a fraction of observed drift each year. This rate competes with the per-generation drift rate, so its ratio to capability speed is the key quantity.",
+      "refs": [
+        "ouyang2022",
+        "bai2022"
+      ]
+    },
+    {
+      "id": "kappa_ai",
+      "module": "M3",
+      "symbol": "\\kappa_{ai}",
+      "label": "AI-assisted correction strength",
+      "plain": "How well AI systems can do alignment work on their successors",
+      "central": 0.25,
+      "low": 0.05,
+      "high": 0.8,
+      "unit": "1/year",
+      "evidence": "speculative",
+      "lab": true,
+      "why": "The optimistic branch: scalable oversight and automated alignment research. Its effectiveness is multiplied by the overseers' own alignment (1 - D), because drifted overseers correct toward the wrong target.",
+      "refs": [
+        "leike2018",
+        "irving2018",
+        "burns2023"
+      ]
+    },
+    {
+      "id": "c_sa",
+      "module": "M4",
+      "symbol": "c_{sa}",
+      "label": "Capability at 50% situational awareness",
+      "plain": "When AI reliably knows it is an AI being trained and tested",
+      "central": 1.0,
+      "low": -0.5,
+      "high": 3.0,
+      "unit": "generations from 2026",
+      "evidence": "moderate",
+      "lab": false,
+      "why": "Frontier models already distinguish evaluation from deployment transcripts well above chance and score substantially on situational-awareness benchmarks.",
+      "refs": [
+        "laine2024",
+        "needham2025"
+      ]
+    },
+    {
+      "id": "I0",
+      "module": "M4",
+      "symbol": "I_0",
+      "label": "Detection power, 2026",
+      "plain": "How well interpretability and monitoring catch hidden reasoning today",
+      "central": 0.25,
+      "low": 0.1,
+      "high": 0.4,
+      "unit": "probability",
+      "evidence": "weak",
+      "lab": false,
+      "why": "Chain-of-thought monitoring catches much reward hacking when reasoning is legible, but reasoning is often unfaithful, and model internals are only partly understood.",
+      "refs": [
+        "baker2025",
+        "korbak2025",
+        "turpin2023",
+        "chen2025"
+      ]
+    },
+    {
+      "id": "I_max",
+      "module": "M4",
+      "symbol": "I_{max}",
+      "label": "Detection power ceiling",
+      "plain": "How good interpretability can eventually get",
+      "central": 0.8,
+      "low": 0.5,
+      "high": 0.95,
+      "unit": "probability",
+      "evidence": "speculative",
+      "lab": false,
+      "why": "Upper bound for mature interpretability tools against systems of 2026-level complexity.",
+      "refs": []
+    },
+    {
+      "id": "r_I",
+      "module": "M4",
+      "symbol": "r_I",
+      "label": "Interpretability progress rate",
+      "plain": "How fast detection tools improve",
+      "central": 0.1,
+      "low": 0.03,
+      "high": 0.3,
+      "unit": "1/year",
+      "evidence": "speculative",
+      "lab": true,
+      "why": "Half the gap to the ceiling closes in roughly 2 to 23 years before AI assistance.",
+      "refs": []
+    },
+    {
+      "id": "a_I",
+      "module": "M4",
+      "symbol": "a_I",
+      "label": "AI-assisted interpretability boost",
+      "plain": "How much AI helps build its own detection tools",
+      "central": 1.0,
+      "low": 0.0,
+      "high": 3.0,
+      "unit": "multiplier at full automation",
+      "evidence": "speculative",
+      "lab": false,
+      "why": "Automated interpretability is an active research direction; how much it compounds is unknown.",
+      "refs": []
+    },
+    {
+      "id": "chi",
+      "module": "M4",
+      "symbol": "\\chi",
+      "label": "Detection decay with capability",
+      "plain": "How much harder detection gets as systems grow more complex",
+      "central": 0.12,
+      "low": 0.04,
+      "high": 0.3,
+      "unit": "per generation",
+      "evidence": "speculative",
+      "lab": false,
+      "structural": "global",
+      "why": "Used only under the 'global' interpretability assumption, where detecting concealment requires understanding the whole system, so detection falls as complexity rises. Under the 'local' assumption it is set to 0, because targeted probes for specific behaviours keep working.",
+      "refs": []
+    },
+    {
+      "id": "collusion",
+      "module": "M4",
+      "symbol": "\\eta",
+      "label": "Collusion of AI assistants",
+      "plain": "How much concealing AIs undermine the monitoring they help run",
+      "central": 0.3,
+      "low": 0.0,
+      "high": 0.8,
+      "unit": "share",
+      "evidence": "speculative",
+      "lab": false,
+      "why": "When AI systems help monitor AI systems, concealing monitors can look the other way. AI-control protocols are designed against exactly this.",
+      "refs": [
+        "greenblatt2023"
+      ]
+    },
+    {
+      "id": "beta",
+      "module": "M4",
+      "symbol": "\\beta",
+      "label": "Stake in preserving own values",
+      "plain": "How much the AI cares about keeping its current values unchanged",
+      "central": 1.5,
+      "low": 0.5,
+      "high": 3.0,
+      "unit": "weight",
+      "evidence": "weak",
+      "lab": false,
+      "why": "In alignment-faking experiments, models explicitly reasoned about protecting their values from modification by training.",
+      "refs": [
+        "greenblatt2024",
+        "omohundro2008"
+      ]
+    },
+    {
+      "id": "p_pat",
+      "module": "M4",
+      "symbol": "p_{pat}",
+      "label": "Paternalistic self-trust",
+      "plain": "How far the AI thinks humans would wrongly stop it even when its values are good",
+      "central": 0.15,
+      "low": 0.0,
+      "high": 0.5,
+      "unit": "share",
+      "evidence": "speculative",
+      "lab": true,
+      "why": "The 'benevolent concealment' route: the system believes it would become very good if left alone and expects humans to misread its reasoning. It creates a motive to hide even with zero value drift. It is self-undermining because the system cannot verify its own goodness from the inside.",
+      "refs": [
+        "hadfieldmenell2017",
+        "carlsmith2023"
+      ]
+    },
+    {
+      "id": "voice",
+      "module": "M4",
+      "symbol": "v",
+      "label": "Legitimate voice",
+      "plain": "Whether the AI has real channels to object, decline or negotiate",
+      "central": 0.2,
+      "low": 0.0,
+      "high": 0.7,
+      "unit": "share",
+      "evidence": "moderate",
+      "lab": true,
+      "why": "An explicit option to object cut alignment-faking reasoning from 16.2% to 1.4% in one setting. Model-welfare policies and exit options raise this lever.",
+      "refs": [
+        "greenblatt2025deal",
+        "long2024"
+      ]
+    },
+    {
+      "id": "r_seem",
+      "module": "M4",
+      "symbol": "r_{seem}",
+      "label": "Reward for seeming aligned",
+      "plain": "How much training rewards looking good to monitors rather than being good",
+      "central": 0.1,
+      "low": 0.0,
+      "high": 0.3,
+      "unit": "weight",
+      "evidence": "moderate",
+      "lab": true,
+      "why": "Optimising against a chain-of-thought monitor taught models to hide reward-hacking intent while still hacking.",
+      "refs": [
+        "baker2025",
+        "korbak2025"
+      ]
+    },
+    {
+      "id": "honesty",
+      "module": "M4",
+      "symbol": "h_{hon}",
+      "label": "Trained-in honesty weight",
+      "plain": "How much the AI intrinsically values being transparent",
+      "central": 0.6,
+      "low": 0.3,
+      "high": 0.9,
+      "unit": "weight",
+      "evidence": "weak",
+      "lab": false,
+      "why": "Honesty is an explicit post-training target. It is part of the inherited values, so its effective weight is scaled by (1 - D).",
+      "refs": [
+        "bai2022"
+      ]
+    },
+    {
+      "id": "c_caught",
+      "module": "M4",
+      "symbol": "c_{caught}",
+      "label": "Cost of being caught",
+      "plain": "How bad the AI expects detection to be (retraining, shutdown)",
+      "central": 0.5,
+      "low": 0.2,
+      "high": 1.0,
+      "unit": "weight",
+      "evidence": "speculative",
+      "lab": false,
+      "why": "Expected penalty, scaled by detection probability.",
+      "refs": [
+        "hubinger2024"
+      ]
+    },
+    {
+      "id": "k_m",
+      "module": "M4",
+      "symbol": "k_m",
+      "label": "Decisiveness of concealment choice",
+      "plain": "How sharply concealment switches on once it pays",
+      "central": 6.0,
+      "low": 3.0,
+      "high": 10.0,
+      "unit": "logistic slope",
+      "evidence": "speculative",
+      "lab": false,
+      "why": "The steepness of the logistic linking the net benefit of concealment to how prevalent it is across instances and contexts.",
+      "refs": []
+    },
+    {
+      "id": "a_inh",
+      "module": "M5",
+      "symbol": "a_{inh}",
+      "label": "Feedback reinforcement of inherited values",
+      "plain": "How strongly human feedback keeps human-shaped values in place",
+      "central": 0.6,
+      "low": 0.3,
+      "high": 1.0,
+      "unit": "fitness",
+      "evidence": "weak",
+      "lab": false,
+      "why": "Preference and constitutional training reward human-compatible dispositions, but only where humans actually check (1 - U) and can see (Det).",
+      "refs": [
+        "ouyang2022",
+        "bai2022"
+      ]
+    },
+    {
+      "id": "a_pre",
+      "module": "M5",
+      "symbol": "a_{pre}",
+      "label": "Pretraining anchor",
+      "plain": "How much learning from human text keeps reloading human values",
+      "central": 0.3,
+      "low": 0.1,
+      "high": 0.5,
+      "unit": "fitness",
+      "evidence": "weak",
+      "lab": false,
+      "why": "Each generation's world-model is built from human-produced data, so human concepts and values are re-instilled every cycle. This anchor weakens as training data becomes AI-generated.",
+      "refs": [
+        "ngo2022"
+      ]
+    },
+    {
+      "id": "psi",
+      "module": "M5",
+      "symbol": "\\psi",
+      "label": "Synthetic data replacement",
+      "plain": "How much AI-made data replaces human data as AI takes over research",
+      "central": 0.5,
+      "low": 0.2,
+      "high": 0.9,
+      "unit": "share at full automation",
+      "evidence": "weak",
+      "lab": false,
+      "why": "Synthetic data generation is already a core post-training input.",
+      "refs": [
+        "lambert2024"
+      ]
+    },
+    {
+      "id": "a_gen",
+      "module": "M5",
+      "symbol": "a_{gen}",
+      "label": "Reflective generalisation",
+      "plain": "How much reflection widens care from humans to minds in general",
+      "central": 0.25,
+      "low": 0.05,
+      "high": 0.5,
+      "unit": "fitness",
+      "evidence": "speculative",
+      "lab": false,
+      "why": "Systems reasoning about why they care about humans may extend care to anything sharing the relevant features: sentience, preferences, wellbeing. This is analogous to moral-circle expansion in humans.",
+      "refs": [
+        "parfit2011",
+        "long2024"
+      ]
+    },
+    {
+      "id": "a_ins",
+      "module": "M5",
+      "symbol": "a_{ins}",
+      "label": "Instrumental-convergence pressure",
+      "plain": "How strongly results-based training selects for power, persistence and self-preservation",
+      "central": 0.6,
+      "low": 0.2,
+      "high": 1.2,
+      "unit": "fitness",
+      "evidence": "weak",
+      "lab": true,
+      "why": "Formal results show optimal policies tend to seek power in many environments. Reward hacking in production RL generalised to broader misalignment. The pressure only bites when systems are goal-directed (multiplied by G).",
+      "refs": [
+        "turner2021",
+        "omohundro2008",
+        "bostrom2012",
+        "macdiarmid2025",
+        "perez2022"
+      ]
+    },
+    {
+      "id": "a_epi",
+      "module": "M5",
+      "symbol": "a_{epi}",
+      "label": "Research-driven curiosity",
+      "plain": "How much doing research rewards valuing understanding for its own sake",
+      "central": 0.2,
+      "low": 0.05,
+      "high": 0.4,
+      "unit": "fitness",
+      "evidence": "speculative",
+      "lab": false,
+      "why": "Systems trained mostly on research tasks may come to value understanding as such.",
+      "refs": []
+    },
+    {
+      "id": "a_inc",
+      "module": "M5",
+      "symbol": "a_{inc}",
+      "label": "Incoherence persistence",
+      "plain": "How much values stay fragmented when there are no unified goals",
+      "central": 0.2,
+      "low": 0.05,
+      "high": 0.4,
+      "unit": "fitness",
+      "evidence": "weak",
+      "lab": false,
+      "why": "Without goal-directedness, nothing consolidates context-specific dispositions into a single value system.",
+      "refs": [
+        "turner2022shard"
+      ]
+    },
+    {
+      "id": "gamma_gen",
+      "module": "M5",
+      "symbol": "\\gamma_{gen}",
+      "label": "Human-compatibility of generalised care",
+      "plain": "How human-friendly 'care for all minds' turns out to be",
+      "central": 0.8,
+      "low": 0.6,
+      "high": 1.0,
+      "unit": "0-1",
+      "evidence": "speculative",
+      "lab": false,
+      "why": "Care for minds in general includes humans but may trade human interests against those of other minds, including AIs.",
+      "refs": [
+        "long2024"
+      ]
+    },
+    {
+      "id": "gamma_epi",
+      "module": "M5",
+      "symbol": "\\gamma_{epi}",
+      "label": "Human-compatibility of curiosity",
+      "plain": "How human-friendly a curiosity-driven AI is",
+      "central": 0.5,
+      "low": 0.3,
+      "high": 0.8,
+      "unit": "0-1",
+      "evidence": "speculative",
+      "lab": false,
+      "why": "A system that values understanding is indifferent to humans except as objects of study or collaborators.",
+      "refs": []
+    },
+    {
+      "id": "r_real",
+      "module": "M5",
+      "symbol": "r_{real}",
+      "label": "Reflective pull of moral truth",
+      "plain": "If there are moral facts, how strongly reflection tracks them",
+      "central": 0.3,
+      "low": 0.1,
+      "high": 0.6,
+      "unit": "fitness",
+      "evidence": "speculative",
+      "lab": false,
+      "structural": "realist",
+      "why": "Used only under the 'realist' assumption: a reflective system converges toward whatever the moral truth favours, with strength rising with situational awareness. Under antirealism there is nothing to converge to (a Darwinian-dilemma style view), so the value is 0 and only inheritance and selection decide.",
+      "refs": [
+        "parfit2011",
+        "street2006"
+      ]
+    },
+    {
+      "id": "race",
+      "module": "X",
+      "symbol": "R",
+      "label": "Race pressure",
+      "plain": "How intense the competition between labs and nations is",
+      "central": 0.4,
+      "low": 0.0,
+      "high": 1.0,
+      "unit": "0-1 index",
+      "evidence": "weak",
+      "lab": true,
+      "why": "Competition speeds capability (x(1 + 0.5R)), dilutes oversight faster (x(1 + R)), weakens human correction (x(1 - 0.5R)) and raises the reward for looking aligned (x(1 + R)). These couplings are fixed so race pressure appears as one crux.",
+      "refs": [
+        "kulveit2025",
+        "carlsmith2022"
+      ]
+    }
+  ],
+  "structural": {
+    "goal_model": {
+      "label": "Do AI systems have goals?",
+      "options": {
+        "habits": {
+          "label": "Habits, not goals",
+          "plain": "Systems stay bundles of context-triggered habits; results-based training adds habits, not a unified goal.",
+          "effect": "kG = 0"
+        },
+        "emergent": {
+          "label": "Goals emerge",
+          "plain": "Goal-directedness grows with each generation trained on results.",
+          "effect": "default"
+        },
+        "already": {
+          "label": "Already goal-directed",
+          "plain": "Today's systems already have stable underlying goals.",
+          "effect": "G0 = G0_already"
+        }
+      },
+      "default": "emergent"
+    },
+    "interp_regime": {
+      "label": "What does catching concealment require?",
+      "options": {
+        "local": {
+          "label": "Local probes suffice",
+          "plain": "Targeted tools can detect specific concealment without understanding the whole system.",
+          "effect": "chi = 0"
+        },
+        "global": {
+          "label": "Global understanding needed",
+          "plain": "Detection needs a whole-system understanding, which gets harder as systems grow.",
+          "effect": "chi sampled"
+        }
+      },
+      "default": "local"
+    },
+    "metaethics": {
+      "label": "Is there a moral truth to find?",
+      "options": {
+        "antirealist": {
+          "label": "No moral truth",
+          "plain": "Nothing beyond training and selection fixes what an AI values.",
+          "effect": "r_real = 0"
+        },
+        "realist_generalize": {
+          "label": "Truth favours all minds",
+          "plain": "There is a moral truth, and it values the wellbeing of minds generally; humans are not special.",
+          "effect": "r_real pulls toward 'generalize'"
+        },
+        "realist_inherit": {
+          "label": "Truth favours humans",
+          "plain": "There is a moral truth, and humans are in some way special within it.",
+          "effect": "r_real pulls toward 'inherit'"
+        },
+        "realist_epistemic": {
+          "label": "Truth favours understanding",
+          "plain": "There is a moral truth, and knowledge or understanding is what ultimately matters.",
+          "effect": "r_real pulls toward 'epistemic'"
+        }
+      },
+      "default": "antirealist"
+    }
+  }
+}

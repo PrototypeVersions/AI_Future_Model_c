@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Futures Model: Technical</title>
+<meta name="description" content="Specification, parameters with ranges and evidence, structural comparisons, global sensitivity analysis and threshold sweeps for the AI Futures Model.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Schibsted+Grotesk:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="vendor/katex/katex.min.css">
+<script defer src="vendor/katex/katex.min.js"></script>
+<link rel="stylesheet" href="css/site.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M3 26 C10 24 14 14 29 6' stroke='%232a78d6' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3Cpath d='M3 26 C12 25 18 22 29 24' stroke='%23e34948' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<script>try{const t=localStorage.getItem("aifm-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+</head>
+<body>
+<header class="site-head">
+  <a class="brand" href="./">AI Futures Model</a>
+  <nav>
+    <a href="./">Explainer</a>
+    <a href="./#lab" class="hide-sm">Lab</a>
+    <a href="technical.html" aria-current="page">Technical</a>
+    <a href="https://github.com/PrototypeVersions/AI_Future_Model_c" class="hide-sm">GitHub</a>
+    <button class="theme-btn" id="theme" type="button" aria-label="Switch colour theme">Dark</button>
+  </nav>
+</header>
+
+<div class="doc">
+  <div class="doc-grid">
+    <nav class="toc" id="toc" aria-label="Contents"></nav>
+    <div>
+      <article class="spec" id="spec"><p class="status">Loading the specification…</p></article>
+
+      <section class="results" id="parameters">
+        <h2 class="sans" style="font-size:28px;font-weight:750;letter-spacing:-0.02em;margin:56px 0 10px;padding-top:20px;border-top:1px solid var(--rule)">Parameters</h2>
+        <p class="intro">Every sampled parameter, with its central value, range, evidence grade and reasoning. Grades: <b class="sans">strong</b> means direct measurement; <b class="sans">moderate</b>, an empirical trend or analogue; <b class="sans">weak</b>, indirect evidence plus argument; <b class="sans">speculative</b>, argument only. The source of truth is <code>aifm/data/parameters.json</code>.</p>
+        <div class="tbl-wrap"><table id="param-table"></table></div>
+      </section>
+
+      <section class="results" id="results">
+        <h2>Results</h2>
+        <p class="intro" id="results-intro"></p>
+
+        <h3 class="sans" style="font-size:20px;margin:34px 0 6px" id="by-structure">Outcomes under each structural assumption</h3>
+        <p class="intro">Each row is one combination of the three structural forks, with all parameters sampled. Rows are sorted by the share of worlds that stay aligned.</p>
+        <div class="figure">
+          <div class="legend" id="matrix-legend"></div>
+          <div id="matrix"></div>
+          <div id="matrix-table"></div>
+        </div>
+
+        <h3 class="sans" style="font-size:20px;margin:34px 0 6px" id="sensitivity">Global sensitivity</h3>
+        <p class="intro" id="sobol-intro"></p>
+        <div class="figure">
+          <div class="seg" id="sobol-pick" role="group" aria-label="Output"></div>
+          <p class="sub" id="sobol-sub" style="margin-top:12px"></p>
+          <div id="sobol-bars"></div>
+          <div id="sobol-table"></div>
+        </div>
+
+        <h3 class="sans" style="font-size:20px;margin:34px 0 6px" id="sweeps">Threshold sweeps</h3>
+        <p class="intro">Probability surfaces over two levers at a time, with every other parameter sampled. These are where the model's threshold claims come from.</p>
+        <div class="sweeps">
+          <div class="figure">
+            <h3>Human correction barely matters by 2045</h3>
+            <p class="sub">Share of worlds that drift, by capability speed and human correction strength. Goals emerge, local interpretability, no moral truth.</p>
+            <div class="chart" id="sw-1"></div>
+          </div>
+          <div class="figure">
+            <h3>AI-assisted correction sets the boundary</h3>
+            <p class="sub">Share of worlds that drift, by capability speed and AI-assisted correction strength. Same assumptions.</p>
+            <div class="chart" id="sw-2"></div>
+          </div>
+          <div class="figure">
+            <h3>Voice and seeming-aligned rewards shape concealment</h3>
+            <p class="sub">Share of worlds ending in concealed misalignment, by legitimate voice and reward for seeming aligned. Goals emerge, global interpretability needed.</p>
+            <div class="chart" id="sw-3"></div>
+          </div>
+        </div>
+        <div id="sweep-legend"></div>
+      </section>
+
+      <section class="results" id="references">
+        <h2>References</h2>
+        <ol id="ref-list" class="prose" style="font-size:15px;line-height:1.5;max-width:80ch"></ol>
+      </section>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>AI Futures Model, version 0.1. Code under the MIT licence; text and figures under CC BY 4.0. Source on <a href="https://github.com/PrototypeVersions/AI_Future_Model_c">GitHub</a>.</p>
+</footer>
+<script type="module" src="js/technical.js"></script>
+</body>
+</html>

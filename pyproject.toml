@@ -1,0 +1,18 @@
+[project]
+name = "aifm"
+version = "0.1.0"
+description = "AI Futures Model: assumption-explicit dynamics of AI training, oversight, concealment and value formation"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = ["numpy>=1.26", "scipy>=1.11"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["aifm"]
+
+[tool.setuptools.package-data]
+aifm = ["data/*.json"]
